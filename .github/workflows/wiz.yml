@@ -4,7 +4,7 @@ on: [pull_request]
 jobs:
   wiz-cli-iac-scan:
     name: 'Wiz-cli IaC Scan'
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     env:
       SCAN_PATH: "." # Set the relative path in the repo to scan
       POLICY: "Default IaC policy" # Set the desired Wiz-cli policy to use
