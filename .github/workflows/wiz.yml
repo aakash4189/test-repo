@@ -8,6 +8,7 @@ jobs:
     env:
       SCAN_PATH: "." # Set the relative path in the repo to scan
       POLICY: "Default IaC policy" # Set the desired Wiz-cli policy to use
+      HOME: "home/ec2-user" # Set the runner home directory for wiz cli
 
     # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
     defaults:
@@ -20,13 +21,13 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Download Wiz-cli
-      run: curl -o wizcli https://wizcli.app.wiz.io/wizcli && chmod +x wizcli
+      run: curl -o /"$HOME"/wizcli https://wizcli.app.wiz.io/wizcli && chmod +x /"$HOME"/wizcli
 
     - name: Authenticate to Wiz
-      run: ./wizcli auth --id "$WIZ_CLIENT_ID" --secret "$WIZ_CLIENT_SECRET"
+      run: /"$HOME"/wizcli auth --id "$WIZ_CLIENT_ID" --secret "$WIZ_CLIENT_SECRET"
       env:
         WIZ_CLIENT_ID: ${{ secrets.WIZ_CLIENT_ID }}
         WIZ_CLIENT_SECRET: ${{ secrets.WIZ_CLIENT_SECRET }}
 
-   ### - name: Run wiz-cli IaC scan
-    ###  run: ./wizcli iac scan --path $SCAN_PATH --policy "$POLICY"
+    - name: Run wiz-cli IaC scan
+      run: /"$HOME"/wizcli iac scan --path $SCAN_PATH --policy $POLICY
